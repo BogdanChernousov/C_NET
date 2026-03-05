@@ -1,0 +1,11 @@
+.env
+__pycache__/
+venv/
+.venv/
+env/
+ENV/
+.venv
+venv
+env
+.env
+s04/.venv/
