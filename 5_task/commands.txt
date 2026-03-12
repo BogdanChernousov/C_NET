@@ -1,0 +1,24 @@
+# Запускаем PostgreSQL контейнер
+docker run -d \
+  --name postgres-container \
+  --network parser-network \
+  -e POSTGRES_DB=parser_db \
+  -e POSTGRES_USER=parser_user \
+  -e POSTGRES_PASSWORD=123 \
+  -v postgres-data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  postgres:15
+
+docker build -t parser-app .
+
+docker run -d \
+  --name parser-container \
+  --network parser-network \
+  --dns 8.8.8.8 \
+  --dns 1.1.1.1 \
+  -p 5000:5000 \
+  parser-app
+
+curl "http://localhost:5000/parse?url=https://ya.ru" - парсинг
+
+curl "http://localhost:5000/data" - получение данных
