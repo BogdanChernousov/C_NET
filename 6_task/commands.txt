@@ -1,0 +1,17 @@
+docker stop nginx-proxy parser-container postgres-container
+
+sudo systemctl stop postgresql
+sudo systemctl stop nginx
+
+sudo lsof -i :5432
+sudo lsof -i :80
+
+docker network connect parser-network postgres-container
+
+docker start postgres-container
+docker start parser-container
+docker start nginx-proxy
+
+curl http://localhost
+curl "http://localhost/parse?url=https://metanit.com"
+curl http://localhost/data
