@@ -1,0 +1,10 @@
+dig +short google.com
+dig +short yandex.ru
+dig +short github.com
+dig +short stackoverflow.com
+dig +short example.com
+
+traceroute -n google.com
+traceroute -n yandex.ru
+traceroute -n github.com
+traceroute -n stackoverflow.com

@@ -1,0 +1,79 @@
+./run.sh stop
+./run.sh start
+./run.sh test
+
+# Добавить локальный IP в список блокировки
+echo "172.18.0.1 1;" >> nginx/geoip/ru.zone
+docker exec nginx-proxy nginx -s reload
+
+# Проверить блокировку (должен вернуть 403 и страницу-заглушку)
+curl http://localhost
+
+# Убрать IP из списка
+sed -i '/172.18.0.1/d' nginx/geoip/ru.zone
+docker exec nginx-proxy nginx -s reload
+
+# 1. PostgreSQL
+docker start postgres-container
+
+# 2. Парсер
+docker start parser-container
+
+# 3. Nginx
+docker start nginx-proxy
+
+# Главная страница
+curl http://localhost
+
+# Запрос на парсинг
+curl "http://localhost/parse?url=https://metanit.com"
+
+# Получение данных из БД
+curl http://localhost/data
+
+sudo systemctl stop postgresql
+sudo systemctl stop nginx
+
+# Проверка занятости портов
+sudo lsof -i :5432
+sudo lsof -i :80
+
+# Остановить и удалить контейнеры
+docker stop nginx-proxy parser-container postgres-container
+docker rm nginx-proxy parser-container postgres-container
+
+# Создать сеть (если не существует)
+docker network create parser-network
+
+# Пересобрать образ парсера
+docker build -t parser-app .
+
+# Запустить PostgreSQL
+docker run -d \
+  --name postgres-container \
+  --network parser-network \
+  -e POSTGRES_DB=parser_db \
+  -e POSTGRES_USER=parser_user \
+  -e POSTGRES_PASSWORD=123 \
+  -v postgres_data:/var/lib/postgresql/data \
+  postgres:15
+
+# Запустить парсер
+docker run -d \
+  --name parser-container \
+  --network parser-network \
+  --env-file .env \
+  parser-app
+
+# Запустить Nginx с geo-блокировкой
+docker run -d \
+  --name nginx-proxy \
+  --network parser-network \
+  -p 80:80 \
+  -v $(pwd)/nginx_proxy.conf:/etc/nginx/nginx.conf:ro \
+  -v $(pwd)/nginx/geoip:/etc/nginx/geoip:ro \
+  -v $(pwd)/nginx/blocked.html:/usr/share/nginx/html/blocked.html:ro \
+  nginx:alpine
+
+# Перезагрузить Nginx
+docker exec nginx-proxy nginx -s reload

@@ -1,3 +1,8 @@
+./run.sh stop
+./run.sh start
+./run.sh test
+
+
 docker stop nginx-proxy parser-container postgres-container
 
 sudo systemctl stop postgresql
@@ -6,12 +11,36 @@ sudo systemctl stop nginx
 sudo lsof -i :5432
 sudo lsof -i :80
 
-docker network connect parser-network postgres-container
-
+# 1. PostgreSQL (должен быть первым)
 docker start postgres-container
+
+# 2. Парсер
 docker start parser-container
+
+# 3. Nginx
 docker start nginx-proxy
 
-curl http://localhost
-curl "http://localhost/parse?url=https://metanit.com"
-curl http://localhost/data
+curl http://localhost - главная старница
+
+curl "http://localhost/parse?url=https://metanit.com" - запрос на парсинг
+
+curl http://localhost/data - получение данных
+
+
+
+
+----------------------------------------------------------------------------
+# Остановить и удалить
+docker stop nginx-proxy parser-container postgres-container
+docker rm nginx-proxy parser-container postgres-container
+
+# Пересобрать образ парсера
+docker build -t parser-app .
+
+# Запустить всё заново
+docker run -d --name postgres-container --network parser-network -e POSTGRES_DB=parser_db -e POSTGRES_USER=parser_user -e POSTGRES_PASSWORD=123 -v postgres_data:/var/lib/postgresql/data postgres:15
+
+docker run -d --name parser-container --network parser-network --env-file .env parser-app
+
+docker run -d --name nginx-proxy --network parser-network -p 80:80 -v $(pwd)/nginx_proxy.conf:/etc/nginx/conf.d/default.conf:ro nginx:alpine
+----------------------------------------------------------------------------

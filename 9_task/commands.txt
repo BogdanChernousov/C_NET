@@ -1,0 +1,15 @@
+# Контейнер IPv6
+docker network create --ipv6 --subnet=2001:db8:2::/64 ipv6-net
+docker run -d --name nginx-ipv6 --network ipv6-net -p 8080:80 nginx:alpine
+
+# Адрес контейнера
+docker inspect nginx-ipv6 | grep "IPv6Address"
+
+# Порт nginx
+docker exec nginx-ipv6 cat /etc/nginx/conf.d/default.conf | grep listen
+
+# IPv4 контейнер
+docker run -d --name nginx-ipv4 -p 8081:80 nginx:alpine
+docker inspect nginx-ipv4 | grep -E "NetworkMode|IPv6Address"
+
+docker inspect nginx-ipv6 | grep -E "NetworkMode|IPv6Address"

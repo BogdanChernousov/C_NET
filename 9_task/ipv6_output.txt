@@ -1,0 +1,5 @@
+14:26:40.036561 veth0708c2f P   IP6 fe80::64a0:76ff:fe7f:373a > fe80::a0d7:2ff:fe42:83ed: ICMP6, neighbor solicitation, who has fe80::a0d7:2ff:fe42:83ed, length 32
+14:26:40.036564 br-ea3337ebd5a5 In  IP6 fe80::64a0:76ff:fe7f:373a > fe80::a0d7:2ff:fe42:83ed: ICMP6, neighbor solicitation, who has fe80::a0d7:2ff:fe42:83ed, length 32
+14:26:40.036590 br-ea3337ebd5a5 Out IP6 fe80::a0d7:2ff:fe42:83ed > fe80::64a0:76ff:fe7f:373a: ICMP6, neighbor advertisement, tgt is fe80::a0d7:2ff:fe42:83ed, length 24
+14:26:40.036593 veth0708c2f Out IP6 fe80::a0d7:2ff:fe42:83ed > fe80::64a0:76ff:fe7f:373a: ICMP6, neighbor advertisement, tgt is fe80::a0d7:2ff:fe42:83ed, length 24
+14:26:47.042179 veth0708c2f Out IP6 fe80::a093:4cff:fe59:47ad.5353 > ff02::fb.5353: 0 [9q] PTR (QM)? _nfs._tcp.local. PTR (QM)? _ipp._tcp.local. PTR (QM)? _ipps._tcp.local. PTR (QM)? _ftp._tcp.local. PTR (QM)? _webdav._tcp.local. PTR (QM)? _webdavs._tcp.local. PTR (QM)? _sftp-ssh._tcp.local. PTR (QM)? _smb._tcp.local. PTR (QM)? _afpovertcp._tcp.local. (141)

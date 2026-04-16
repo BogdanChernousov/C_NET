@@ -1,0 +1,5 @@
+14:26:05.732638 wlp3s0 Out IP 192.168.3.8.54990 > 34.107.221.82.80: Flags [.], ack 800840081, win 63, options [nop,nop,TS val 4010655393 ecr 1526568606], length 0
+14:26:05.732666 wlp3s0 Out IP 192.168.3.8.54994 > 34.107.221.82.80: Flags [.], ack 1285436321, win 63, options [nop,nop,TS val 4010655393 ecr 724887267], length 0
+14:26:05.896876 wlp3s0 In  IP 34.107.221.82.80 > 192.168.3.8.54994: Flags [.], ack 1, win 1050, options [nop,nop,TS val 724897711 ecr 4010634838], length 0
+14:26:05.896879 wlp3s0 In  IP 34.107.221.82.80 > 192.168.3.8.54990: Flags [.], ack 1, win 1050, options [nop,nop,TS val 1526578934 ecr 4010635068], length 0
+14:26:07.448624 wlp3s0 Out IP 192.168.3.8.36908 > 87.250.251.119.443: Flags [P.], seq 3649400695:3649400738, ack 3330467447, win 63, options [nop,nop,TS val 1110090969 ecr 1507751979], length 43
